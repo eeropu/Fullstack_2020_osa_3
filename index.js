@@ -23,9 +23,27 @@ let persons = [
     }
 ]
 
+const generateId = () => {
+    /*const maxId = persons.length > 0
+        ? Math.max(...persons.map(p => p.id))
+        : 0
+    return maxId + 1*/
+    return Math.floor(Math.random() * 10000000)
+}
 
 app.get('/api/persons', (req, res) => {
     res.json(persons)
+})
+
+app.post('/api/persons', (req, res) => {
+    const body = req.body
+    const person = {
+        name: body.name,
+        number: body.number,
+        id: generateId()
+    }
+    persons.push(person)
+    res.json(person)
 })
 
 app.get('/api/persons/:id', (req, res) => {
