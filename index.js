@@ -31,19 +31,35 @@ const generateId = () => {
     return Math.floor(Math.random() * 10000000)
 }
 
+const validatePerson = (person) => {
+    if (!person.name) {
+        return `person's name can't be empty`
+    } else if (!person.number) {
+        return `person's number can't be empty`
+    } else if (persons.find(p => p.name === person.name)) {
+        return `person with the given name "${person.name}" has already been added`
+    }
+    return undefined
+}
+
 app.get('/api/persons', (req, res) => {
     res.json(persons)
 })
 
 app.post('/api/persons', (req, res) => {
     const body = req.body
-    const person = {
-        name: body.name,
-        number: body.number,
-        id: generateId()
+    const error = validatePerson(body)
+    if (error) {
+        res.status(400).json({error})
+    } else {
+        const person = {
+            name: body.name,
+            number: body.number,
+            id: generateId()
+        }
+        persons.push(person)
+        res.json(person)
     }
-    persons.push(person)
-    res.json(person)
 })
 
 app.get('/api/persons/:id', (req, res) => {
