@@ -4,6 +4,7 @@ const app = express()
 const cors = require('cors')
 app.use(cors())
 
+//Tehtävä 3.11
 app.use(express.static('build'))
 
 const bodyParser = require('body-parser')
