@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const express = require('express')
 const app = express()
 
@@ -13,6 +15,9 @@ app.use(bodyParser.json())
 const morgan = require('morgan')
 morgan.token('body', function (req, res) { return JSON.stringify(req.body) })
 app.use(morgan(':method :url :body :status :res[content-length] - :response-time ms'))
+
+// Models
+const Person = require('./models/person')
 
 let persons = [
     {
@@ -52,7 +57,9 @@ const validatePerson = (person) => {
 }
 
 app.get('/api/persons', (req, res) => {
-    res.json(persons)
+    Person.find({}).then(response => {
+        res.json(response.map(person => person.toJSON()))
+    })
 })
 
 app.post('/api/persons', (req, res) => {
