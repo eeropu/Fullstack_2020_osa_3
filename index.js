@@ -64,7 +64,7 @@ app.get('/api/persons', (req, res) => {
 
 app.post('/api/persons', (req, res) => {
     const body = req.body
-    const error = validatePerson(body)
+    /*const error = validatePerson(body)
     if (error) {
         res.status(400).json({error})
     } else {
@@ -75,7 +75,16 @@ app.post('/api/persons', (req, res) => {
         }
         persons.push(person)
         res.json(person)
-    }
+    }*/
+
+    const person = new Person({
+        name: body.name,
+        number: body.number
+    })
+
+    person.save().then(savedPerson => {
+        res.json(savedPerson.toJSON())
+    })
 })
 
 app.get('/api/persons/:id', (req, res) => {
