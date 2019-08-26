@@ -83,9 +83,10 @@ app.post('/api/persons', (req, res, next) => {
     })
 
     person.save()
-        .then(savedPerson => savedPerson.toJSON)
+        .then(savedPerson => savedPerson.toJSON())
         .then(result => {
-        res.json(savedPerson.toJSON())
+            console.log(result)
+            res.json(result)
         }).catch(error => next(error))
 })
 
@@ -131,6 +132,8 @@ app.get('/api/info', (req, res, next) => {
         res.send((infoString))
     }).catch(error => next(error))
 })
+
+// Error handlers -------------------------------------------------------------
 
 const notFoundHandler = (error, req, res, next) => {
     if ( error.name === 'CastError' && error.kind === 'ObjectId' ) {
